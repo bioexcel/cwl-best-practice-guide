@@ -21,7 +21,7 @@ copyright:
   since: 2020
 
 embed: |
-  <img src="/cwl-best-practice-guide/img/cc-by.svg" />
+  <img src="/cwl-best-practice-guide/assets/img/cc-by.svg" />
   Distributed under the
   <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0) </a>; except 
   CWL examples where the creators have waived all copyrights according to
