@@ -1,0 +1,49 @@
+# Update according to
+# https://github.com/rundocs/jekyll-rtd-theme/releases/tag/v1.1.7
+remote_theme: rundocs/jekyll-rtd-theme@bb00646afd7f05b3f4badb32ce1710197c483dfd
+#theme: jekyll-rtd-theme
+logo: assets/img/bioexcel.svg
+
+title: BioExcel Best Practice Guide: Creating workflows with Common Workflow Language 
+description: |
+  This best practice guide outlines the development process for writing a 
+  workflow using the Common Workflow Language (CWL), from creating and 
+  selecting tools like BioBB, through early experimentation, reuse and 
+  testing, to optimization and ensuring reproducibility before 
+  publication in workflow repositories.
+
+# rundocs/jekyll-rtd-theme theme settings
+addons_branch: false
+edit: true
+
+author: "The University of Manchester UK and BioExcel contributors"
+copyright:
+  since: 2020
+
+embed: |
+  <img src="/cwl-best-practice-guide/img/cc-by.svg" />
+  Distributed under the
+  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0) </a>; except 
+  CWL examples where the creators have waived all copyrights according to
+  <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal (CC0 1.0) Public Domain Dedication</a>.
+
+addons:
+  - github
+  - plugins
+
+copyright:
+  revision: false
+  
+readme_index:
+  with_frontmatter: true
+
+plugins:
+  - jekyll-default-layout
+  - jekyll-readme-index
+  - jekyll-github-metadata
+  - jekyll-titles-from-headings
+  - jemoji
+  - jekyll-relative-links
+
+# Show the order prefix 1. 2. etc in toctree
+show_sorted: true
