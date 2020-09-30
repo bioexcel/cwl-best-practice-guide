@@ -5,8 +5,10 @@ sort: 4
 
 # Writing incremental tests
 
-Find/create test data for each step. If the data is open then partial data from earlier steps is easiest to use.
+## Find/create test data for each step. 
 
-TODO: Structure workflow files to support testing
+If the data is open then partial data from earlier steps is easiest to use.
 
-TODO: Setting up automated testing with GitHub Actions
+## Structure workflow files to support testing
+
+## Setting up automated testing with GitHub Actions
