@@ -5,7 +5,7 @@ title: Creating workflows with Common Workflow Language
 # Creating workflows with Common Workflow Language 
 
 {% if site.description %}
-  {% include {{ site.description }} %}
+  {{ site.description }}
 {% endif %}
 
 

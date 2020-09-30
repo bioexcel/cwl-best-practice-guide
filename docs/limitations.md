@@ -1,6 +1,5 @@
 ---
 title: Pitfalls and limitations
-sort: 3
 ---
 
 # Common pitfalls and limitations of CWL

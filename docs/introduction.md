@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Introduction
-sort: 1
 ---
 
 # Introduction

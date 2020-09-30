@@ -4,7 +4,7 @@ remote_theme: rundocs/jekyll-rtd-theme@bb00646afd7f05b3f4badb32ce1710197c483dfd
 #theme: jekyll-rtd-theme
 logo: assets/img/bioexcel.svg
 
-title: BioExcel Best Practice Guide: Creating workflows with Common Workflow Language 
+title: "BioExcel Best Practice Guide: Creating workflows with Common Workflow Language"
 description: |
   This best practice guide outlines the development process for writing a 
   workflow using the Common Workflow Language (CWL), from creating and 

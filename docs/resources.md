@@ -1,6 +1,5 @@
 ---
 title: Resources
-sort: 4
 ---
 
 # Recommended resources

@@ -1,7 +1,7 @@
 ---
 title: Writing partial workflows
 sort: 5
-----
+---
 
 # Writing partial workflows
 
