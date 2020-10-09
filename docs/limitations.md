@@ -12,3 +12,7 @@ title: Pitfalls and limitations
 
 
 ## Managing file names and file storage
+
+## EDAM format gotchas
+
+Adding metadata enforces type checking  - what workarounds?
