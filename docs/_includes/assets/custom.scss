@@ -1,0 +1,22 @@
+
+.wy-side-nav-search { 
+    background-color: rgb(95%,95%,95%);
+}
+
+.wy-menu-vertical li.current {
+    
+}
+
+.wy-menu-vertical header, .wy-menu-vertical p.caption, .wy-breadcrumbs a {
+    color: #ffab39;
+}
+
+.wy-menu-vertical li.current > a, .wy-menu-vertical li.on a {
+    background-color: #ffab39;
+    color: black;
+}
+
+
+.wy-menu-vertical li.current a { 
+    color: black;
+}
