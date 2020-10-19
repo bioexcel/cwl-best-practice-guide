@@ -16,7 +16,7 @@ include yourself, certain measures should be taken to give CWL
 additional information about your tools, inputs and outputs.
 
 
-## Using containers and Conda packages
+## Use containers instead of local binaries
 
 CWL [CommandLineTool](https://www.commonwl.org/v1.2/CommandLineTool.html) steps can 
 run any local shell commands, which is a good way to get started, for instance:
@@ -38,46 +38,77 @@ outputs:
 
 ```
 
+The above CWL description can run the command line tool [curl](https://curl.haxx.se/), assuming it is available on `PATH`. It is also possible to use an absolute path for `baseCommand`, say to get a newer version:
 
+```yaml
+baseCommand: "/opt/bleeding-edge/bin/curl"
+```
 
 However such workflows are considered fragile as they:
 
 * Rely on pre-installed tools (which may be outdated or unexpectedly become updated)
 * Are hard to keep consistent on cloud execution nodes
 * May use absolute paths, which needs to be changed on new systems
-* Easily become platform-specific (e.g. macOS' BSD-based `sed` and Linux' GNU `sed` take different options)
+* Might be platform-specific (e.g. macOS' BSD-based `sed` and Linux' GNU `sed` take different options)
 * Do not document version of the tool or how to install it
 * May rely on local files outside the workflow directory (e.g. `/etc` configurations)
-* Add version constraints for common dependencies across tools (e.g. Python)
+* Add version constraints for common dependencies across tools (e.g. Python 3.6 vs 3.8)
 
-The easiest solution for CWL authors is often convert the step to 
+The easiest solution for CWL workflow authors is often to convert the steps to 
 [use Docker containers](https://www.commonwl.org/user_guide/07-containers/index.html). 
 
 ### What are containers?
 
-In short, a _container_ is executed as an isolated part of the operating system, with its own
-network and file system hierarchy, that is `/` and `localhost` inside the container
-is separate from outside. The file system is initialized from a downloaded ("pulled")
+In short, a _container_ is a set of processes 
+executed as an isolated part of the operating system, with its own
+network and file system hierarchy; that is `/` and `localhost` inside the container
+is separate from the host. The file system is initialized from a 
 _container image_ which typically have a miniature Linux distribution
-and the required tools binaries pre-installed along with their dependencies. 
+and the required binaries pre-installed along with their dependencies. 
 
-It is possible to build your own Docker images using a 
+```info
+Containers are implemented by a set of 
+[Linux kernel features](https://linuxcontainers.org/) and can be considered an evolution
+of [Solaris Zones](https://docs.oracle.com/cd/E18440_01/doc.111/e18415/chapter_zones.htm)
+and [FreeBSD Jails](https://www.freebsd.org/doc/handbook/jails.html) although with different focus.
+```
+
+The most popular container technology is [Docker](https://www.docker.com/), which adds
+command line tools and daemons to manage and build containers, as well as
+download ("pull") pre-built container images from online repositories. 
+
+In _dev-ops_ environments Docker is often used as a way to combine 
+networked _microservices_ (one per container) or to deploy long-running
+server applications (as a light-weight VM alternative); however for CWL 
+[CommandLineTool](https://www.commonwl.org/v1.2/CommandLineTool.html)
+containers are used for individual executions of 
+command line tools that exchange files. In CWL you'll typically wrap
+each tool binary as a separate container image, 
+and each step invocation creates a new temporary container that is
+removed after the workflow finishes.
+
+```tip
+It is possible to build your own Docker images using a reproducible
 [Dockerfile](https://docs.docker.com/engine/reference/builder/) 
-recipe with shell script commands to be added onto a _base image_. The built image can be kept
-locally or deposited in a repository like [Docker Hub](https://hub.docker.com/) or
+recipe with shell script commands for file system 
+changes to add on top of a _base image_. 
+The built image can be kept locally, or deposited in a 
+repository like [Docker Hub](https://hub.docker.com/) or
 [Quay.io](https://quay.io/).
+```
 
-For workflows the use of containers therefore provides a consistent runtime environment 
+### Containers in workflows
+
+For workflows the use of containers provides a consistent runtime environment 
 for individual tools, ensuring that all required dependencies and configurations
 are included and in predictable paths. Containers also provide a level of isolation, 
 which mean that your workflow can combine tools that could otherwise have 
 conflicting dependency requirements. 
 
-
 ```info
 On macOS and Windows desktops, containers transparently
 execute tools in a Linux Virtual Machine, ensuring workflow tools are executed
-in the same environment across operating system. Care should be taken to
+in the same environment across host operating systems. Care should be taken to
 ensure the VM has sufficient memory required by the workflow's tools.
 ```
 
@@ -96,13 +127,13 @@ included in the container image or declared as explicit input in CWL.
 
 Note that normally the CWL engine itself does **not** run in a container,
 as it is responsible for coordinating the workflow and the other containers. 
-Although workflow can mix container and non-container steps, it is recommended to 
-transition all steps to use containers. 
+Although workflows can mix container and non-container steps, it is recommended to 
+transition all steps to use containers so that the whole workflow is portable.
 
-For testing and security purposes, 
 [cwltool](https://github.com/common-workflow-language/cwltool#using-user-space-replacements-for-docker) 
 can take an option `--default-container debian:9` which ensures all command line tools run in a container 
-with the given base image.
+with the given base image. It is recommended to transition workflows to use explicit 
+images with `DockerRequirement` even for "regular" POSIX tools like `grep` and `sed`.
 
 ```warning
 If a tool use containers internally, it can be tricky or insecure to 
@@ -117,15 +148,15 @@ do not have currently have support for privilege options.
 
 ### Finding the image
 
-See [finding tools](tools.md) for how to find a good container image.
+See [finding tools](tools.md) for how to find existing container images for many bioinformatics tools.
+
+The below CWL example assumes we want to run <https://hub.docker.com/r/curlimages/curl> from the Docker Hub, which image name corresponds to `curlimages/curl`:
 
 ```yaml
 hints:
   DockerRequirement:
     dockerPull: curlimages/curl
 ```
-
-The parameter to `dockerPull` assumes public Docker images in Docker Hub; `curlimages/curl` corresponds to <https://hub.docker.com/r/curlimages/curl>
 
 For using images from other repositories like <https://quay.io/>, the `dockerPull` must be qualified with a hostname:
 
@@ -135,7 +166,17 @@ hints:
     dockerPull: quay.io/opencloudio/curl
 ```
 
-It is not recommended to reference private Docker repositories or use the [DockerRequirement](https://www.commonwl.org/v1.0/CommandLineTool.html#DockerRequirement) options of `dockerLoad`/`dockerImport`, except for proprietary software which can't be distributed in public repositories. 
+It is recommended to use the official Docker image from a tool's project when it's available, although there can be many reasons to pick a different image:
+
+* Container has not been updated for latest release
+* Desired plugins or compile options were not enabled
+* Upstream container image is unnecessarily large, an alternative based on [alpine](https://hub.docker.com/_/alpine) and [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/) might reduce the Docker image size
+* Upstream image does not have desired hardware optimization, e.g. 
+
+
+It is not recommended to reference private Docker repositories or use the 
+[DockerRequirement](https://www.commonwl.org/v1.0/CommandLineTool.html#DockerRequirement)
+options of `dockerLoad`/`dockerImport`, except for proprietary software which can't be distributed in public repositories. 
 
 Similarly the `dockerPull` option should only be used with a local `Dockerfile` if customizations are needed in order to run the tool from CWL. If a desired open source tool do not exist as a container image, you can use `dockerFile` as an experiment before then publishing the image to Docker Hub under your user or organization's own namespace, replacing `dockerFile` with the updated referencing in `dockerPull`:
 
@@ -147,8 +188,26 @@ hints:
 ```
 
 
+## Conda & BioConda
 
-### BioConda
+An alternative to containers is to use a packaging system like 
+[Conda](https://conda.io/), particularly as the 
+[BioConda](https://bioconda.github.io/) initiative have wrapped an 
+more than 7000 bioinformatics packages and are frequently updated.
+
+Compared to containers a Conda environment is also a file hierarchy 
+with its own `bin` and `lib`, but activating an environment is less 
+intrusive and requires no `root` permissions as it only modifies
+shell environments like `PATH`. Conda environments do not gain the
+safety from isolation as in containers, but typically do include most
+of the system dependencies like `libstdc.so`.
+
+In CWL Conda dependencies are identified by their URL in a
+https://anaconda.org/ _channel_ - which typically should be one of:
+
+* <https://anaconda.org/conda-forge>
+* <https://anaconda.org/bioconda/>
+
 
 ```yaml
 hints:
@@ -158,6 +217,73 @@ hints:
         specs: 
           - https://anaconda.org/conda-forge/curl
 ```
+
+### Using Conda in the shell
+
+One advantage of Conda is that it can also be easily used on
+the command line tool for experimenting with the same version
+of the tool as in the workflow:
+
+```shell
+(base) stain@biggie:~$ conda create -n bam bamtools
+ (..)
+(base) stain@biggie:~$ conda activate bam
+
+(bam) stain@biggie:~$ type bamtools 
+bamtools is hashed (/home/stain/miniconda3/envs/bam/bin/bamtools)
+
+(bam) stain@biggie:~$ bamtools  --version
+bamtools 2.5.1
+```
+
+The binaries will mainly reference the Conda environment `/home/stain/miniconda3/envs/bam/`
+but will also refecence some core libraries in the main operating system.
+
+```shell
+(bam) stain@biggie:~$ ldd /home/stain/miniconda3/envs/bam/bin/bamtools
+	linux-vdso.so.1 (0x00007ffdcc54d000)
+	libz.so.1 => /home/stain/miniconda3/envs/bam/bin/../lib/libz.so.1 (0x00007f5c13290000)
+	libstdc++.so.6 => /home/stain/miniconda3/envs/bam/bin/../lib/libstdc++.so.6 (0x00007f5c1311b000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f5c12fb4000)
+	libgcc_s.so.1 => /home/stain/miniconda3/envs/bam/bin/../lib/libgcc_s.so.1 (0x00007f5c12fa0000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f5c12dae000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f5c133fe000)
+```
+
+### Conda tips and caveats
+
+```tip
+If a [BioConda](https://bioconda.github.io/) package is outdated or missing,
+[contributing a recipe](https://bioconda.github.io/contributor/index.html) is often
+welcomed in a couple of hours by a helpful community.
+```
+One disadvantage of Conda is that it may take long to download and initialize
+from an empty environment. It is also slightly more fragile than containers, as
+you can install multiple tools, or later updates
+could cause library dependency version conflicts. CWL engines using Conda will 
+create a new environment for each CWL `CommandLineTool`.
+
+It is possible to list multiple conda `packages` in CWL, although
+usually the main recipe will have all the required dependencies included.
+
+Conda can install the CWL engines [conda-forge/cwltool](https://anaconda.org/conda-forge/cwltool)
+and [bioconda/toil](https://anaconda.org/bioconda/toil), and they 
+can be used to run CWL workflows that use Conda or Docker.
+
+```warning
+As `bioconda/toil` depend on a particular version of `cwltool`, install that first. If you desire
+a newer `cwltool` create a separate Conda environment. Install 
+[conda-forge/cwltool](https://anaconda.org/conda-forge/cwltool), 
+not the outdated [bioconda/cwltool](https://anaconda.org/bioconda/cwltool)!
+```
+
+Conda packages are compiled for each operating system and may have subtle differences. 
+BioConda packages are only available for macOS and Linux. 
+
+Conda can be used to get a consistent/updated set of 
+GNU [coreutils](https://anaconda.org/conda-forge/coreutils),
+[sed](https://anaconda.org/conda-forge/sed), [Python](https://anaconda.org/conda-forge/python) 
+etc. on macOS and Windows.
 
 
 ## Locking down versions of command line tools
@@ -173,6 +299,7 @@ hints:
   DockerRequirement:
     dockerPull: curlimages/curl:7.67.0
 ```
+
 
 
 ### Docker or Singularity?
@@ -199,29 +326,48 @@ same node, and most bioinformatics tools found as Docker images
 assume Linux x64 containers.
 ```
 
-All major CWL engines support Docker, but
+```warning
+The [Windows 10 Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+can also [support Docker](https://docs.docker.com/docker-for-windows/wsl/) but this configuration
+is currently not recommended for CWL users; bioinformatics tools in such containers 
+may crash due to subtle differences between Linux kernel and the WSL2 subsystem, 
+particularly for POSIX file system access.
+```
 
-[Singularity](https://sylabs.io/docs/) is popular in HPC centres as it permits more fine-grained access control. Singularity can use its own container images or load Docker images; however from CWL only Docker images are supported.
-
-[udocker](https://indigo-dc.gitbook.io/udocker/) is a 
-
-but some of them also support 
+All major CWL engines support Docker, but some of them also support 
 [alternative container systems](https://docs.dockstore.org/en/develop/advanced-topics/docker-alternatives.html), 
 although their configuration vary slightly:
     
-* [cwltool](https://github.com/common-workflow-language/cwltool#using-user-space-replacements-for-docker): 
-  - : `cwltool --singularity`
-  - (which do not require `root` privileges but): `cwltool --user-space-docker-cmd=udocker`
+* [cwltool](https://github.com/common-workflow-language/cwltool#using-user-space-replacements-for-docker): Docker by default, or `cwltool --singularity`
+  or  `cwltool --user-space-docker-cmd=udocker` or `cwltool --user-space-docker-cmd=nvidia-docker`
 * [Toil](https://toil.readthedocs.io/en/latest/running/cwl.html): Docker by default, or `toil-cwl-runner --singularity`
 * [Cromwell](https://cromwell.readthedocs.io/en/stable/tutorials/Containers/#singularity): Docker by default, Singularity through configuration
 * [Arvados](https://doc.arvados.org/v2.1/install/install-docker.html): Only Docker supported
 * [CWL-Airflow](https://cwl-airflow.readthedocs.io/): Only Docker supported
 * [REANA](http://docs.reana.io/): Only Docker supported
 
-When [executing on cloud nodes](https://toil.readthedocs.io/en/latest/gettingStarted/quickStart.html#awscwl) or
-on a local cluster, then the chosen container technology will usually need to 
-be installed on each node or be part of the node's base image. 
+```info
+[Singularity](https://sylabs.io/docs/) is popular in HPC centres as it permits more 
+fine-grained access control and is considered more secure than Docker. 
+Singularity can use its own container images or load 
+Docker images; however with CWL [DockerRequirement](https://www.commonwl.org/v1.0/CommandLineTool.html#DockerRequirement) 
+only loading of Docker images are supported.
+```
 
+[nvidia-docker](https://github.com/NVIDIA/nvidia-docker) is a wrapper of `docker` that handles bindings and permissions for NVIDIA GPUs. It can be used together with CUDA-optimized containers like [gromacs/gromacs](https://hub.docker.com/r/gromacs/gromacs/).
+
+```info
+[udocker](https://indigo-dc.gitbook.io/udocker/) is a lighweight user-space alternative to Docker, 
+with a largely compatible command line interface. By not requiring `root` privileges it can
+be easier to install, but instead of using Linux kernel features for containers
+this instead rewrites library calls to pretend the 
+```
+
+When [executing on cloud nodes](https://toil.readthedocs.io/en/latest/gettingStarted/quickStart.html#awscwl) or
+on a local cluster, the chosen container technology will need to 
+be installed on each node or be part of the node's base image. 
+It is recommended to keep the same version on the workflow head node as on the compute nodes. Containers may be used by the CWL engine to 
+evaluate [Javascript expressions](https://www.commonwl.org/user_guide/13-expressions/index.html).
 
 
 ## Avoiding off-workflow data flows

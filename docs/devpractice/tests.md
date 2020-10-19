@@ -12,3 +12,8 @@ If the data is open then partial data from earlier steps is easiest to use.
 ## Structure workflow files to support testing
 
 ## Setting up automated testing with GitHub Actions
+
+## Defensive CWL programming
+
+Using guards for inputs and outputs
+
