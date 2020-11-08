@@ -44,7 +44,7 @@ Check global GitHub search for Common Workflow Language files as last resort. If
 
 ## Further reading
 
-* `git submodules`
- * Using `biobb_adapters` as example for linking to a tool library: <https://github.com/bioexcel/biobb-wf-md-setup-protein-cwl>
+ * `git submodules`
+  * Using `biobb_adapters` as example for linking to a tool library: <https://github.com/bioexcel/biobb-wf-md-setup-protein-cwl>
 
 
