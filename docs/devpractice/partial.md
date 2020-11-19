@@ -33,6 +33,8 @@ steps:
     run: subscriptB.cwl
     out: [out2]
 ```
+The individual tasks within the workflow will then be described in scripts `subscriptA.cwl` and `subscriptB.cwl`. These can be tool wrappers, expression tools, or full workflows (with calls to further CWL scripts) themselves.
+
 
 
 ## Maintaining and reusing tool descriptions
@@ -123,6 +125,42 @@ In this tutorial BioBB CWL script: <https://github.com/bioexcel/biobb-cwl-tutori
 
 
 ## Using nested workflows
+
+More complex workflows can be constructed by nesting another workflow within the called CWL script. These should be laid out in a similar manner to a standard workflow. The difference in use will be that the inputs are read from the parent workflow, and the outputs are passed to that same workflow, rather than directly to the user.
+
+For example, consider that `subscriptA.cwl` from the example above is a workflow too. The script could be laid out as:
+```
+class: Workflow
+inputs:
+  in1: string
+  
+outputs:
+  out1:
+    type: string
+    outputSource: step3/outstring3
+
+steps:
+
+  step1:
+    in:
+      inputa: in1
+    run: subsubscriptA.cwl
+    out: [outstring1]
+    
+  step2:
+    in:
+      inputb: step1/outstring1
+    run: subsubscriptB.cwl
+    out: [outstring2]
+    
+  step3:
+    in:
+      inputc1: step1/outstring1
+      inputc2: step2/outstring2
+    run: subsubscriptC.cwl
+    out: [outstring3]
+```
+In this case the scripts `subsubscriptA.cwl`, `subsubscriptB.cwl`, and `subsubscriptC.cwl` could all again be either tool wrappers, expression tools, or full workflows again.
 
 ## Using abstract operations as placeholders
 
