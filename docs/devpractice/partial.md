@@ -17,15 +17,21 @@ inputs:
 outputs:
   val_out:
     type: string
-    outputSource: step1/out1
+    outputSource: step2/out2
 
 steps:
 
   step1:
     in:
       in1: val_in
-    run: subscript.cwl
+    run: subscriptA.cwl
     out: [out1]
+    
+  step2:
+    in:
+      in2: step1/out1
+    run: subscriptB.cwl
+    out: [out2]
 ```
 
 
