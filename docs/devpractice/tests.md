@@ -5,6 +5,8 @@ sort: 4
 
 # Writing incremental tests
 
+Providing tests for workflows is important - they enable new users to be sure that a workflow behaves as expected, and also gives developers a reference to use to ensure that any changes made to the tools doesn't break the workflow. Setting up tests can be daunting, and time consuming at the start, but doing so will pay off in the long term. Below we discuss some of the details of how to do this.
+
 ## Find/create test data for each step
 
 If the data is open then partial data from earlier steps is easiest to use.
