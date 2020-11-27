@@ -45,7 +45,29 @@ CWL does not have a test suite in the same manner that one is available for pyth
 Are we able to run single steps in a workflow, and compare with standard outputs? I think testing will be a lot more manual process for CWL than for other languages?
 -->
 
+## Workspace Structure
 
+To organise your working and testing code we recommend adopting this structure to your git repository:
+```
+📦quakehunter
+ ┣ 📂biobb@
+ ┣ 📂tools
+ ┃ ┣ 📜tool1.cwl
+ ┃ ┗ 📜tool2.cwl
+ ┣ 📂test
+ ┃ ┣ 📂tool1
+ ┃ ┃ ┣ 📂tool1.prov
+ ┃ ┃ ┣ 📜tool1_test.yml
+ ┃ ┃ ┣ 📜tool1_test.input
+ ┃ ┃ ┣ 📜tool1_test.output
+ ┃ ┗ 📂tool2
+ ┃   ┣ 📂tool2.prov
+ ┃   ┣ 📜tool2_test.yml
+ ┃   ┣ 📜tool2_test.input
+ ┃   ┗ 📜tool2_test.output
+ ┣ 📜workflow.cwl
+ ┗ 📜workflow_settings.yaml
+```
 
 ## Documentation
 
