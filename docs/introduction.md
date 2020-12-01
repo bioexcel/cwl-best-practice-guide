@@ -27,8 +27,13 @@ Within a workflow different language versions can be specified for each script, 
 
 ## Common CWL use-cases
 
-
+CWL is becoming a common tool for building biosciences workflows. In the BioExcel project there are examples of workflows for [protein simulations](https://github.com/bioexcel/biobb-wf-md-setup-protein-cwl) which make use of the CWL modules for GROMACS in the [BioExcel Building Blocks library](https://github.com/bioexcel/biobb_adapters).
 
 ## Considerations for scalable workflow execution
 
+Ensure that your workflow is modular. Each CommandLineTool or Expression tool should focus on a single action - resist the urge to make these complicated and covering a small workflow of tasks in their own right, this might help you in the short-term, but in the long-term having a fixed block of enclosed code like this will hamper workflow development.
+
+Try to make use of container services such as docker or singularity as much as possible for your tools. While it is possible to use package managers such as conda for managing software dependencies, these will not ensure the same consistency in the run-environment for your tools that using a container will.
+
+Build a library for commonly used tools, and when you find yourself using a tool in more than one workflow, move it to this library for all workflows, rather than copying it to the new workflow (and ending up with multiple copies of the same tool).
 
