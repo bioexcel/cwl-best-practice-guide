@@ -164,5 +164,43 @@ In this case the scripts `subsubscriptA.cwl`, `subsubscriptB.cwl`, and `subsubsc
 
 ## Using abstract operations as placeholders
 
+Version 1.2 of CWL introduces the [Operation](https://www.commonwl.org/v1.2/Workflow.html#Operation) class. This can be used to represent a potential step in a workflow which does not yet have a CommandLineTool, Workflow or ExpressionTool implementation. It allows for a workflow to be created, which will not be executable, but will be valid for the purposes of running analysis of the workflow, such as printing RDF graphs, or workflow visualization.
+
+If you were developing a workflow which used the `exampletoolwrapper.cwl` script given above, you might start developing that tool wrapper by first sketching out the inputs and outputs that you want, using the `Operation` class:
+```
+cwlVersion: v1.2
+class: Operation
+label: example tool wrapper
+doc: |
+  Description of the tool, and how to use it.
+
+inputs:
+  input_a:
+    label: input description
+    doc: |
+      Description of input_a, including type, etc.
+    type: File
+  
+  input_b:
+    label: input description
+    doc: |
+      Description of input_b, including type, etc.
+    type: string
+
+outputs:
+  output_a:
+    label: output description
+    doc: |
+      Description of output_a
+    type: File
+  outputBinding:
+    glob: "examplefile.bin"
+```
+Here we have included the input and outputs, with labels and documentation so that we know what these should be. Not included are the `baseCommand` (as this isn't in the `Operation` standard), nor the hints (which could be included, but perhaps we are not yet aware of the docker requirement), nor the `inputBinding`s for each input (as we haven't yet seen a working example of the tool we are wrapping). We have also specified the cwlVersion should be v1.2, to make sure our cwl-runner implementation is prepared for the `Operation` class.
+
+Including `Operation` scripts like this will allow the workflow script that calls it to be run using cwl-runner - however, as `exampletoolwrapper.cwl` is abstract, all you would get for a 'successful' run is the warning message `Workflow has unrunnable abstract Operation`.
+
+However, as the workflow is now valid, you can run analysis tools on it, such as validating the workflow, printing sub-graphs, checking input requirements, etc. So starting off with `Operation` class scripts within your workflow enables higher level development to take place.
+
 ## Workflow/data variants using top-level workflows
 
