@@ -5,12 +5,14 @@ sort: 3
 
 # Finding / creating tools
 
+CWL describes only the workflow for your process. To run this process you will need to use suitable tools, for which you will need to write, or use pre-existing, CWL descriptions.
 
 ## Locate existing CWL-described tools
 
-Libraries of tools which already have CWL interfaces are available for general use. For example, <https://github.com/common-workflow-library> and <https://dockstore.org/>.
-
-Before writing your own interface it is recommended you search these, to see if someone else has already done this.
+Before writing a CWL interface for a tool, it is recommended you check to make sure no-one else has done so. Libraries of tools which already have CWL interfaces are available for general use. For example:
+* <https://github.com/common-workflow-library/bio-cwl-tools> is a library of CWL-specific CommandLineTool descriptions for biology/life-sciences related applications
+* <https://dockstore.org/> is a library of docker based tools described using either CWL, Workflow Description Language (WDL), Nextflow, or Galaxy
+* <https://github.com/bioexcel/biobb_adapters> is a library of adaptors (including for CWL) for popular bioinformatic tools
 
 
 ### versioning of CWL tool descriptions 
