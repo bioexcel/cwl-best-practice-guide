@@ -87,7 +87,12 @@ hints:
 
 ## Avoiding off-workflow data flows
 
+Workflows ideally should document the whole process obtaining your final results. Any extra processes, such as downloading input files, and arranging or reformatting these, or moving/reformatting intermediate data, which are not included in your workflow script reduce the portability and reproducibility of your scripts. Best practice is to include all dataflows into the workflow script. If this is not possible (if, for example, certain inputs are not available for download from a public source, or the workflow is run in a restricted environment without access to these), then you will have to document the extra steps in the README file that accompanies the workflow.
+
 ## Parameterizing a workflow
+
+TODO
 
 ## Adding type annotations
 
+Where possible you should explicitly add type annotations to your file declarations. These will enable the cwltool to carry out basic checks on your input and output files, to ensure that they are what is expected. In the CWL tutorial there is further guidance on [specifying file formats](https://www.commonwl.org/user_guide/16-file-formats/index.html), as well as how to [create custom types](https://www.commonwl.org/user_guide/19-custom-types/index.html) for your file definitions. Creating custom types when you work with specialised data files will help ensure that new users of your workflow will be notified of errors in inputs that they might not necessarily have thought about checking.
