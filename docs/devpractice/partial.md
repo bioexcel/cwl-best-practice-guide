@@ -9,7 +9,7 @@ To make development an easier process, in which you can test your code throughou
 
 To split out your operations to separate scripts, your master script should follow the design:
 
-```
+```yaml
 class: Workflow
 inputs:
   val_in: string
@@ -40,7 +40,7 @@ The individual tasks within the workflow will then be described in scripts `subs
 ## Maintaining and reusing tool descriptions
 
 One important use for these subscript workflows is the recording of tool API descriptions, easing the reuse of these in multiple workflows. These scripts will follow the format:
-```
+```yaml
 class: CommandLineTool
 label: example tool wrapper
 doc: |
@@ -82,7 +82,7 @@ outputs:
 Examples of such tool descriptors can be found in the BioExcel Building Block adapters repository: <https://github.com/bioexcel/biobb_adapters/tree/master/biobb_adapters/cwl>.
 
 These tool descriptions can then be called from an overarching workflow script (assuming the above script has been saved as `exampletoolwrapper.cwl`):
-```
+```yaml
 class: Workflow
 label: Example workflow calling a tool descriptor
 doc: |
@@ -113,11 +113,11 @@ steps:
 ```
 
 Using this method of wrapping tools enables you to keep details such as docker container requirements separate from your main workflow script, making the overarching script as clean as possible. It also enables you, if you are running your scripts on a host with internet access, to use tool descriptions stored remotely. E.g.:
-```
+```yaml
     run: biobb_adaptors/cwl/biobb_io/mmb_api/pdb.cwl
 ```
 was be replaced with:
-```
+```yaml
     run: https://raw.githubusercontent.com/bioexcel/biobb_adapters/v0.1.4/biobb_adapters/cwl/biobb_io/mmb_api/pdb.cwl
 ```
 In this tutorial BioBB CWL script: <https://github.com/bioexcel/biobb-cwl-tutorial-template/blob/master/BioExcel-CWL-firstWorkflow.cwl>. Doing this reduces library installation requirements for your endusers.
@@ -129,7 +129,7 @@ In this tutorial BioBB CWL script: <https://github.com/bioexcel/biobb-cwl-tutori
 More complex workflows can be constructed by nesting another workflow within the called CWL script. These should be laid out in a similar manner to a standard workflow. The difference in use will be that the inputs are read from the parent workflow, and the outputs are passed to that same workflow, rather than directly to the user.
 
 For example, consider that `subscriptA.cwl` from the example above is a workflow too. The script could be laid out as:
-```
+```yaml
 class: Workflow
 inputs:
   in1: string
@@ -167,7 +167,7 @@ In this case the scripts `subsubscriptA.cwl`, `subsubscriptB.cwl`, and `subsubsc
 Version 1.2 of CWL introduces the [Operation](https://www.commonwl.org/v1.2/Workflow.html#Operation) class. This can be used to represent a potential step in a workflow which does not yet have a CommandLineTool, Workflow or ExpressionTool implementation. It allows for a workflow to be created, which will not be executable, but will be valid for the purposes of running analysis of the workflow, such as printing RDF graphs, or workflow visualization.
 
 If you were developing a workflow which used the `exampletoolwrapper.cwl` script given above, you might start developing that tool wrapper by first sketching out the inputs and outputs that you want, using the `Operation` class:
-```
+```yaml
 cwlVersion: v1.2
 class: Operation
 label: example tool wrapper
