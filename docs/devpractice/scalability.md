@@ -85,7 +85,7 @@ The principal best followed for scattering workflows is to try to create the lon
 Scattering can be best organised using nested workflows - creating a single workflow which covers all tasks within a scattered process, then scattering that will keep the dependencies clear.
 
 An example external script:
-```
+```yaml
 cwlVersion: v1.0
 class: Workflow
 
@@ -116,7 +116,7 @@ steps:
 ```
 
 And the example internal script:
-```
+```yaml
 cwlVersion: v1.0
 class: Workflow
 
