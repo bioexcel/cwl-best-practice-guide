@@ -3,6 +3,8 @@ layout: default
 title: About this guide
 ---
 
+# About this guide
+
 This BioExcel Best Practice Guide outlines the development process for writing a workflow using the Common Workflow Language (CWL). It is intended to complement the other CWL guides which are already available, rather than replace them. Based on our experiences of working with the language, and associated tools, it highlights good practices to follow, features to use, and pitfalls to avoid when using CWL.
 
 ## How to use this guide
