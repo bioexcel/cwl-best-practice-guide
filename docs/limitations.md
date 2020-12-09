@@ -8,7 +8,7 @@ CWL works on abstract objects - it can sometimes be unclear how you can pull sim
 
 ## Common CWL workarounds
 
-Javascript ExpressionTools can be used for working around some limitations. It is recommended to keep usage of these to a minimum, but sometimes they are the best tool for working around a problem.
+Javascript ExpressionTools can be used for working around some limitations of CWL. It is recommended to keep usage of these to a minimum, but sometimes they are the best tool for a task. If you do need to use them there is guidance on doing this in the [CWL user guide](https://www.commonwl.org/user_guide/13-expressions/index.html).
 
 ## When CWL might not be best workflow language
 
