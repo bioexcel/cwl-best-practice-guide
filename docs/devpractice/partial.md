@@ -5,7 +5,7 @@ sort: 5
 
 # Writing partial workflows
 
-To make development an easier process, in which you can test your code throughout development, it is good practice to break the workflow down into descrete steps that can be written and tested individually. CWL enables the use of nested scripts, so that you can do this partial development more easily.
+To make development an easier process, in which you can test your code throughout development, it is good practice to break the workflow down into discrete steps that can be written and tested individually. CWL enables the use of nested scripts, so that you can do this partial development more easily.
 
 To split out your operations to separate scripts, your master script should follow the design:
 
