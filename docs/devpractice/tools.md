@@ -27,7 +27,7 @@ An alternative, if the CWL tool description is available within a git repository
 
 ## Creating your own CWL-described tools
 
-If a CWL description does not exist for your tool of interest, then you will need to create it. These can be installed and run within your local environment however, to ensure portability it is recommended to create a container image for the tool, and access that using CWL.
+If a CWL description does not exist for your tool of interest, then you will need to create it. These can be installed and run within your local environment. However, to ensure portability it is recommended to create a container image for the tool, and access that using CWL.
 
 ### Find existing container images
 
@@ -40,7 +40,7 @@ Check <https://bioconda.github.io/> and <https://biocontainers.pro/> for suitabl
 
 ### Check license requirements of tools
 
-Consider the use that you will be putting the tool too, and check the license of the tool to make sure it is suitable.
+Consider the use that you will be putting the tool to, and check the license of the tool to make sure it is suitable.
 
 ### Did someone already write a CWL description?
 
