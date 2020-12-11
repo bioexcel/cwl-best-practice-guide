@@ -68,7 +68,7 @@ To organise your working and testing code we recommend adopting this structure t
  ┣ 📜workflow.cwl
  ┗ 📜workflow_settings.yml
 ```
-The main workflow script (and example configuration yaml file) would be in the root directory, with tools in a subdirectory (and tools in other repositories linked using git submodules). The test directory will contain a directory for each tool requiring testing. Each of these directories will contain example input / output data, a YAML configuration file for running the test, and a directory containing provenence information for these tests. How to create and use these testing tools will be described in later sections.
+The main workflow script (and example configuration yaml file) would be in the root directory, with tools in a subdirectory (and tools in other repositories linked using git submodules). The test directory will contain a directory for each tool requiring testing. Each of these directories will contain example input / output data, a YAML configuration file for running the test, and a directory containing provenance information for these tests. How to create and use these testing tools will be described in later sections.
 
 ## Documentation
 
