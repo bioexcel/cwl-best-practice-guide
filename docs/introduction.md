@@ -5,7 +5,7 @@ title: Introduction
 
 # Introduction
 
-CWL has been designed to be a platform-agnostic tool for building (principally scientific) workflows. Taking tools such as make as its inspiration, but applying these principles to the very heterogeneous infrastructure that is available today. It is also intended to help facilitate the tracking of provenance for these workflows, enabling research to be more reproducable. Both of these aims are achieved by isolating the individual tasks in the workflow - requiring the explicit specification of the inputs and outputs from each step assists with provenance tracking, as well as allowing each task to be run on the most suitable platform.
+CWL has been designed to be a platform-agnostic tool for building (principally scientific) workflows. Taking tools such as make as its inspiration, but applying these principles to the very heterogeneous infrastructure that is available today. It is also intended to help facilitate the tracking of provenance for these workflows, enabling research to be more reproducible. Both of these aims are achieved by isolating the individual tasks in the workflow - requiring the explicit specification of the inputs and outputs from each step assists with provenance tracking, as well as allowing each task to be run on the most suitable platform.
 
 ## Overview of Common Workflow Language
 
