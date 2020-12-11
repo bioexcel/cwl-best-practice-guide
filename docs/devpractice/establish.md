@@ -32,7 +32,7 @@ As development progresses, it is common to tag versions of the code which are in
  * Once the workflow is considered 'finished' then a 1.0 release can be made. This does not mean all bugs will be fixed, or that changes might not be needed. Any of these that are released will come as .X or .X.X releases.
  * If a release is made which introduces new features, then it is common to increment the major number (i.e. 1.X to 2.0).
 
-This tagging can be done within git, and both github abd gitlab are designed for highlighting these tagged releases to make it easier for users to find the version of your code that you want them to find.
+This tagging can be done within git, and both github and gitlab are designed for highlighting these tagged releases to make it easier for users to find the version of your code that you want them to find.
 
 
 ## Testing
