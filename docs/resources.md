@@ -13,7 +13,7 @@ title: Resources
 
 * <https://www.commonwl.org/user_guide/rec-practices/>
 * <https://docs.dockstore.org/en/develop/advanced-topics/best-practices/best-practices.html>
-* <https://doc.arvados.org/v1.4/user/cwl/cwl-style.html>
+* <https://doc.arvados.org/user/cwl/cwl-style.html>
 
 ## Recommended bibliography (reviews)
 
