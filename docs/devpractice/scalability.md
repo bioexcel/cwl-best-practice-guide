@@ -75,7 +75,7 @@ executing your workflow.
 
 ## Considerations for data handling on cloud execution
 
-<https://doc.arvados.org/v2.1/user/cwl/cwl-extensions.html>
+<https://doc.arvados.org/user/cwl/cwl-extensions.html>
 
 
 ## Where to scatter? Structuring iterations with nested workflows
