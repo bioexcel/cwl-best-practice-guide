@@ -26,6 +26,12 @@ The [conditional execution](https://www.commonwl.org/v1.2/Workflow.html#Conditio
 
 ## Dealing with type incompatibility, e.g. mismatch of EDAM format
 
+Data types for tool inputs, and outputs, can (and should) be specified using the `format` field, as described in the [File Formats](https://www.commonwl.org/user_guide/16-file-formats/) tutorial. Doing so helps to ensure data consistency throughout a workflow, by checking type compatibility when data produced by one tool is used by another tool, as well as guiding users in what input data to provide (and what output data to expect). 
+
+It is recommended, where possible, to use a format definition taken from a widely-used ontological resource, such as [EDAM](http://edamontology.org). Doing so will enable users to reference the formats that your workflow expects, so that they can ensure they match these.
+
+Note, however, that the cwltool currently compares the format string only, it does not check the file for conformance to that format definition. It is up to you to make sure that you use the correct definition for your file format. If a format definition for your files is not available in the existing ontological databases, then you can set your own format string - however it is recommended that you do this in your own namespace, so it is clear it is not part of any existing database. It is also possible to request the addition of your format to a database, e.g. by raising an [issue for EDAM on github](https://github.com/edamontology/edamontology/issues).
+
 ## Managing file names and file storage
 
 
