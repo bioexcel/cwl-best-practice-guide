@@ -39,6 +39,40 @@ channels:
 dependencies:
   - cwl_runner
 ```
+This should be saved in your git repository - in this example the file will be called `env.yml`.
+
+The github actions script should be saved in a folder `.github/workflows/` within your git repository. The basic layout this takes is:
+```
+name: CI testing
+
+on: [push, pull_request]
+
+jobs:
+
+  workflow_validation:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Set up Conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: 3.8
+        activate-environment: cwlrunner
+        environment-file: env.yml
+     
+     - name: Validate Script
+       run: |
+         conda run -n cwlrunner cwltool --validate script.cwl
+```
+
 
 
 ## Defensive CWL programming
