@@ -24,7 +24,22 @@ This also allows you to make siblings of the parent workflow to tweak data handl
 
 ## Setting up automated testing with GitHub Actions
 
-_TODO_
+If you are using github to host your git repository, then you can make use of github actions to automate your testing process. Setting the tests up can be a (relatively) straightforward process, if you follow a few simple rules, and approach this in an iterative manner.
+
+The minimum requirements are:
+- github actions script
+- package dependency file for your script
+
+Your dependency file will describe the packages needed to run CWL (in the first instance - you can add other dependencies later). If you use conda for installing the `cwl_runner` then this could be as simple as:
+```
+name: cwlrunner
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - cwl_runner
+```
+
 
 ## Defensive CWL programming
 
