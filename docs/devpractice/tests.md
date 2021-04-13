@@ -24,7 +24,7 @@ This also allows you to make siblings of the parent workflow to tweak data handl
 
 ## Setting up automated testing with GitHub Actions
 
-If you are using github to host your git repository, then you can make use of github actions to automate your testing process. Setting the tests up can be a (relatively) straightforward process, if you follow a few simple rules, and approach this in an iterative manner.
+If you are using github to host your git repository, then you can make use of [github actions](https://docs.github.com/en/actions) to automate your testing process. Setting the tests up can be a (relatively) straightforward process, if you follow a few simple rules, and approach this in an iterative manner.
 
 The minimum requirements are:
 - github actions script
@@ -57,8 +57,6 @@ jobs:
     
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        submodules: recursive
     
     - name: Set up Conda
       uses: conda-incubator/setup-miniconda@v2
@@ -72,6 +70,17 @@ jobs:
        run: |
          conda run -n cwlrunner cwltool --validate script.cwl
 ```
+This will validate the `script.cwl` CWL script when a `push` is made to the github repository, or when a `pull_request` is made to the repository. The first two steps, `Checkout repository` and `Set up Conda`, use the [checkout](https://github.com/actions/checkout) and [setup-miniconda](https://github.com/conda-incubator/setup-miniconda) actions from the github marketplace (these are, generally, a lot simpler to use than writing your own scripts, and should work on most available testing OS). The last step, `Validate Script`, runs a simple shell command (the shell is not a login shell, so conda cannot be activated normally and `conda run -n [env]` must be used instead) that carries out the validation of the workflow script.
+
+If your repository uses git submodules for loading libraries, then these can be loaded by adapting the checkout step:
+```
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+```
+
+
 
 
 
