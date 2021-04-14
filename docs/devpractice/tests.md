@@ -83,6 +83,14 @@ If your repository uses git submodules for loading libraries, then these can be 
 
 
 
+Once you have a script which successfully runs the validation test (even if not all steps validate successfully), then you can start adding other tests as extra steps in the script. These will require inputs for your CWL workflow, which can be gathered as described above, and stored in a `tests` directory, along with the configuration file for the tests. These can be added as extra steps in your script as they are provided, e.g.:
+```
+     - name: Run Testcase Script
+       run: |
+         conda run -n cwlrunner cwltool script.cwl tests/testcase.yml
+```
+
+
 
 ## Defensive CWL programming
 
