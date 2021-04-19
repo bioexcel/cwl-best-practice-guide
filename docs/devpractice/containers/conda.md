@@ -11,11 +11,11 @@ is to use a packaging system like
 [BioConda](https://bioconda.github.io/) initiative have wrapped an 
 more than 7000 bioinformatics packages and are frequently updated.
 
-Compared to containers a Conda environment is also a file hierarchy 
-with its own `bin` and `lib`, but activating an environment is less 
+Similar to containers, a Conda environment is also a file hierarchy 
+with its own `bin` and `lib`, but activating a Conda environment is less 
 intrusive and requires no `root` permissions as it only modifies
 shell environments like `PATH`. Conda environments do not gain the
-safety from isolation as in containers, but typically do include most
+safety from isolation as containers do, but they typically do include most
 of the system dependencies like `libstdc.so`.
 
 ## Conda in CWL
@@ -27,9 +27,9 @@ item to the `hints` of the `CommandLineTool` object.
 
 ```tip
 We could place the `SoftwareRequirement` under `requirements` instead, but 
-this would prevent workflow execution if Conda was not available, even if the
-command line was available on `PATH`. Similarly we also usually
-place `DockerRequirement` under `hints` so that the workflow engine can
+this would prevent workflow execution if Conda was not available, even if the 
+command line tool was already available on `PATH`. Similarly we also usually 
+place `DockerRequirement` under `hints` so that the workflow engine can 
 try both options.
 ```
 
@@ -37,7 +37,7 @@ In CWL, Conda dependencies are identified by their URL in a
 https://anaconda.org/ _channel_ - which typically should be one of:
 
 * <https://anaconda.org/conda-forge>
-* <https://anaconda.org/bioconda/>
+* <https://anaconda.org/bioconda>
 
 
 ```yaml
@@ -52,12 +52,12 @@ hints:
 ## Using Conda in the shell
 
 One advantage of Conda is that it can also be easily used on
-the command line tool for experimenting with the same version
-of the tool as in the workflow:
+the command line for experimenting with the same version
+of the tool as your workflow will eventually use:
 
 ```shell
 (base) stain@biggie:~$ conda create -n bam bamtools
- (..)
+ (...)
 (base) stain@biggie:~$ conda activate bam
 
 (bam) stain@biggie:~$ type bamtools 
@@ -68,7 +68,7 @@ bamtools 2.5.1
 ```
 
 The binaries will mainly reference the Conda environment `/home/stain/miniconda3/envs/bam/`
-but will also refecence some core libraries in the main operating system.
+but will also reference some core libraries in the main operating system.
 
 ```shell
 (bam) stain@biggie:~$ ldd /home/stain/miniconda3/envs/bam/bin/bamtools
@@ -84,9 +84,9 @@ but will also refecence some core libraries in the main operating system.
 ## Conda tips and caveats
 
 ```tip
-If a [BioConda](https://bioconda.github.io/) package is outdated or missing,
-[contributing a recipe](https://bioconda.github.io/contributor/index.html) is often
-welcomed in a couple of hours by a helpful community.
+If a [BioConda](https://bioconda.github.io/) package is outdated or missing, 
+[contributing a recipe](https://bioconda.github.io/contributor/index.html) is often 
+welcomed by the community, and can often be accepted within a couple of hours.
 ```
 One disadvantage of Conda is that it may take long to download and initialize
 from an empty environment. It is also slightly more fragile than containers, as
@@ -97,23 +97,25 @@ create a new environment for each CWL `CommandLineTool`.
 It is possible to list multiple conda `packages` in CWL, although
 usually the main recipe will have all the required dependencies included.
 
-Conda can install the CWL engines [conda-forge/cwltool](https://anaconda.org/conda-forge/cwltool)
+Conda can be used to install the CWL engines [conda-forge/cwltool](https://anaconda.org/conda-forge/cwltool)
 and [bioconda/toil](https://anaconda.org/bioconda/toil), and they 
 can be used to run CWL workflows that use Conda or Docker.
 
 ```warning
-As `bioconda/toil` depend on a particular version of `cwltool`, install that first. If you desire
+As `bioconda/toil` depend on a particular version of `cwltool`, install that first. If you desire 
 a newer `cwltool` create a separate Conda environment. Install 
 [conda-forge/cwltool](https://anaconda.org/conda-forge/cwltool), 
 not the outdated [bioconda/cwltool](https://anaconda.org/bioconda/cwltool)!
 ```
 
 Conda packages are compiled for each operating system and may have subtle differences. 
-BioConda packages are only available for macOS and Linux. 
+While Conda runs on Linux, macOS and Windows, it should be noted that BioConda packages 
+are only available for macOS and Linux. 
 
 Conda can be used to get a consistent/updated set of 
 GNU [coreutils](https://anaconda.org/conda-forge/coreutils),
-[sed](https://anaconda.org/conda-forge/sed), [Python](https://anaconda.org/conda-forge/python) 
+[sed](https://anaconda.org/conda-forge/sed), 
+[Python](https://anaconda.org/conda-forge/python) 
 etc. on macOS and Windows.
 
 
