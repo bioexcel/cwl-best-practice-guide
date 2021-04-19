@@ -75,9 +75,11 @@ The main workflow script (and example configuration yaml file) would be in the r
 ### README
 
 A README.md file should always be included with a project. This should cover these basic topics:
-* Dependencies
-* Installation procedure
-* Basic Usage
+
+* What does this workflow do?
+* What (software) does it need to run?
+* How do you install it?
+* How do you use it?
 * Attribution, and contact details
 * License
 
