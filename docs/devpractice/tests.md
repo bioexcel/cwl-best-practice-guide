@@ -108,7 +108,7 @@ Once you have a script which successfully runs the validation test (even if not 
 
 ## Defensive CWL programming
 
-It is good practice to specify a `format` for all `File` objects passed into / out from your tools. These should, where possible, refer to an existing etomological description, such as the [EDAM PDB format](http://edamontology.org/format_1476), e.g.:
+It is good practice to specify a `format` for all `File` objects passed into / out from your tools. These should, where possible, refer to an existing formal vocabulary description, such as the [EDAM PDB format](http://edamontology.org/format_1476), e.g.:
 ```
 inputs:
   input_file:
@@ -125,6 +125,6 @@ inputs:
     format: edam:format_1476
 ```
 
-Doing this will provide a prompt for the user to check the format of their input file. Note that the file itself is not checked by the cwltool, only the workflow annotation, so it is possible for a user to simply label their incorrect input file as being the correct format in order to try to run the workflow. But adding this `format` check will assist them in debugging their issues once they see that this does not work.
+Doing this will provide a prompt for the user to check the format of their input file. Note that the file itself is not checked by the cwltool, only the workflow annotation, so it is of course possible for a user to simply label their incorrect input file as if it was the correct format, in order to try to run the workflow. But adding this `format` check will assist them in debugging their issues once they see that this does not work.
 
-You can specify your own, local, format for the `File` objects - this allows for quick development of new tools and workflows, at the cost of some traceability. If you do this it is recommended to include format information in the documentation that you provide with the tool and, in the long-term, to submit your format for inclusion in an otological dataset (such as EDAM).
+You can specify your own, local, format for the `File` objects - this allows for quick development of new tools and workflows, at the cost of some traceability. If you do this it is recommended to include format information in the documentation that you provide with the tool and, in the long-term, to submit your format for inclusion in an ontology or vocabulary (such as EDAM).
