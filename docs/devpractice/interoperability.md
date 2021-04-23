@@ -73,7 +73,7 @@ For further guidance, see the [Containers & packaging](containers/) section.
 
 One challenge with using external software packages is that a Docker image like [curlimages/curl](https://hub.docker.com/r/curlimages/curl) will resolve to the `latest` version, which over time will change. For instance at time of writing this version is `7.76.1`, but a later version of the tool may intentionally or unintentionally break functionality you rely on.
 
-```info
+```tip
 A good tool will follow [Semantic Versioning](https://semver.org/) rules, meaning a version number `3.2.1` can be broken down as `MAJOR.MINOR.PATCH`, with upgrades roughly interpreted as:
 * `PATCH` (e.g. `3.2.1` update of `3.2.0`) fixes bug in implementation, no new functionality
 * `MINOR` (e.g. `3.2.0` update of `3.1.4`) adds functionality (e.g. new parameter), otherwise backwards compatible. May deprecate (but not remove) functionality, may change requirements (e.g. macOS > 10.14)
@@ -99,7 +99,7 @@ hints:
 Note above how `version` is an `[array]` indicating multiple versions. This may be useful if different operating systems provide varying versions, or where you want to indicate both the lowest and highest version you have tested.
 
 ```warning
-A downside of locking down versions is that your workflow will not benefit from bugfixes of the tool. It is therefore important for production workflows that you try later versions of the tools, and verify workflow functionality using [tests](tests.md).
+A downside of locking down versions is that your workflow will not benefit from bugfixes of the tool. It is therefore important for production workflows that you regularly try upgrading the workflow to use the latest versions of its tools, and verify the workflow functionality using [tests](tests.md).
 ```
 
 
