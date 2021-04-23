@@ -71,6 +71,19 @@ For further guidance, see the [Containers & packaging](containers/) section.
 
 ## Locking down versions of command line tools
 
+One challenge with using external software packages is that a Docker image like [curlimages/curl](https://hub.docker.com/r/curlimages/curl) will resolve to the `latest` version, which over time will change. For instance at time of writing this version is `7.76.1`, but a later version of the tool may intentionally or unintentionally break functionality you rely on.
+
+```info
+A good tool will follow [Semantic Versioning](https://semver.org/) rules, meaning a version number `3.2.1` can be broken down as `MAJOR.MINOR.PATCH`, with upgrades roughly interpreted as:
+* `PATCH` (e.g. `3.2.1` update of `3.2.0`) fixes bug in implementation, no new functionality
+* `MINOR` (e.g. `3.2.0` update of `3.1.4`) adds functionality (e.g. new parameter), otherwise backwards compatible. May deprecate (but not remove) functionality, may change requirements (e.g. macOS > 10.14)
+* `MAJOR` (e.g. `4.0.0` update of `3.2.1`) removes or changes existing functionality (e.g. remove parameter, different file format)
+
+Unfortunately the reality is never as clean as this, and you should therefore ensure your workflow has sufficient [tests](tests.md) to help you verify an upgrade of a tool.
+```
+
+For provenance reasons it is therefore best practice to at least _document_ which version you have used/tested under `SoftwareRequirement`, and to lock down any `DockerRequirement` to a particular _tagged version_ of the image, e.g. `curlimages/curl:7.67.0`.
+
 ```yaml
 hints:
   SoftwareRequirement:
@@ -83,15 +96,19 @@ hints:
     dockerPull: curlimages/curl:7.67.0
 ```
 
+Note above how `version` is an `[array]` indicating multiple versions. This may be useful if different operating systems provide varying versions, or where you want to indicate both the lowest and highest version you have tested.
+
+```warning
+A downside of locking down versions is that your workflow will not benefit from bugfixes of the tool. It is therefore important for production workflows that you try later versions of the tools, and verify workflow functionality using [tests](tests.md).
+```
+
 
 
 ## Avoiding off-workflow data flows
 
 Workflows ideally should document the whole process obtaining your final results. Any extra processes, such as downloading input files, and arranging or reformatting these, or moving/reformatting intermediate data, which are not included in your workflow script reduce the portability and reproducibility of your scripts. Best practice is to include all dataflows into the workflow script. If this is not possible (if, for example, certain inputs are not available for download from a public source, or the workflow is run in a restricted environment without access to these), then you will have to document the extra steps in the README file that accompanies the workflow.
 
-## Parameterizing a workflow
-
-TODO
+<!-- ## Parameterizing a workflow TODO -->
 
 ## Adding type annotations
 
