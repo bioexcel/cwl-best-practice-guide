@@ -7,14 +7,14 @@ sort: 3
 
 CWL describes only the workflow for your process. To run this process you will need to use suitable tools, for which you will need to write, or use pre-existing, CWL descriptions.
 
-## Locate existing CWL-described tools
+## Finding CWL tool descriptons
 
 Before writing a CWL interface for a tool, it is recommended you check to make sure no-one else has done so. Libraries of tools which already have CWL interfaces are available for general use. For example:
 * <https://github.com/common-workflow-library/bio-cwl-tools> is a library of CWL-specific CommandLineTool descriptions for biology/life-sciences related applications (principally focused on bioinformatics).
 * <https://dockstore.org/> is a library of docker based tools described using either CWL, Workflow Description Language (WDL), Nextflow, or Galaxy.
 * <https://github.com/bioexcel/biobb_adapters> is a library of adaptors (including for CWL) for popular biomolecular simulation tools (including some machine learning).
 
-### including CWL tool descriptions into your workflow
+### Using CWL tool descriptions.
 
 Copying CWL interface code, when you find it, directly into your own workflow is not recommended. Doing this will make acknowledging the original developers more difficult, and will also break your link to the original tool, so if/when that is updated you will have to update your copy (if you notice at all that the original has been updated).
 
@@ -22,16 +22,14 @@ Instead it is better, where possible, to link to, or import directly, the origin
 
 An alternative, if the CWL tool description is available within a git repository, is to use [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to link to that repository from yours. This will provide an explicit link to the tool from your workflow repository, making for clearer provenance of the CWL tool descriptions that you have used. An example of doing this for a BioExcel workflow is described [here](https://research-it.manchester.ac.uk/news/2020/09/28/advanced-git-linking-code-repositories-using-submodules/).
 
-### versioning of CWL tool descriptions 
+### Versioning of CWL tool descriptions 
 
 
-## Creating your own CWL-described tools
+## Creating CWL tool descriptions
 
 If a CWL description does not exist for your tool of interest, then you will need to create it. These can be installed and run within your local environment. However, to ensure portability it is recommended to create a container image for the tool, and access that using CWL.
 
-### Find existing container images
-
-You can search for existing containers at <https://hub.docker.com/> and <https://quay.io/> (includes BioContainer). Make sure to check the origin of the container, and also check to make sure the tool version is up to date.
+{% include note.html content="To find existing container images you can search for existing containers at <https://hub.docker.com/> and <https://quay.io/> (includes BioContainer). Make sure to check the origin of the container, and also check to make sure the tool version is up to date." %}
 
 ### Finding existing packages in BioConda/BioContainers
 
