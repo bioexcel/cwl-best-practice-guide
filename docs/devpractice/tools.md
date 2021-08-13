@@ -29,7 +29,9 @@ An alternative, if the CWL tool description is available within a git repository
 
 If a CWL description does not exist for your tool of interest, then you will need to create it. These can be installed and run within your local environment. However, to ensure portability it is recommended to create a container image for the tool, and access that using CWL.
 
-{% include note.html content="To find existing container images you can search for existing containers at <https://hub.docker.com/> and <https://quay.io/> (includes BioContainer). Make sure to check the origin of the container, and also check to make sure the tool version is up to date." %}
+```tip
+To find existing container images you can search for existing containers at <https://hub.docker.com/> and <https://quay.io/> (includes BioContainer). Make sure to check the origin of the container, and also check to make sure the tool version is up to date.
+```
 
 ### Finding existing packages in BioConda/BioContainers
 
