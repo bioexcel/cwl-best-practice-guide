@@ -17,15 +17,15 @@ is separate from the host. The file system is initialized from a
 _container image_ which typically have a miniature Linux distribution
 and the required binaries pre-installed along with their dependencies. 
 
-```info
+```note
 Containers are implemented by a set of 
-[Linux kernel features](https://linuxcontainers.org/) and can be considered an evolution
-of [Solaris Zones](https://docs.oracle.com/cd/E18440_01/doc.111/e18415/chapter_zones.htm)
+[Linux kernel features](https://linuxcontainers.org/) and can be considered an evolution 
+of [Solaris Zones](https://docs.oracle.com/cd/E18440_01/doc.111/e18415/chapter_zones.htm) 
 and [FreeBSD Jails](https://www.freebsd.org/doc/handbook/jails.html) although with different focus.
 ```
 
 The most popular container technology is [Docker](https://www.docker.com/), which adds
-command line tools and daemons to manage and build containers, as well as
+command line tools and daemons to manage and build containers, as well as to
 download ("pull") pre-built container images from online repositories. 
 
 In _dev-ops_ environments Docker is often used as a way to combine 
@@ -39,12 +39,12 @@ and each step invocation creates a new temporary container that is
 removed after the workflow finishes.
 
 ```tip
-It is possible to build your own Docker images using a reproducible
+It is possible to build your own Docker images using a reproducible 
 [Dockerfile](https://docs.docker.com/engine/reference/builder/) 
 recipe with shell script commands for file system 
 changes to add on top of a _base image_. 
 The built image can be kept locally, or deposited in a 
-repository like [Docker Hub](https://hub.docker.com/) or
+repository like [Docker Hub](https://hub.docker.com/) or 
 [Quay.io](https://quay.io/).
 ```
 
@@ -53,13 +53,13 @@ repository like [Docker Hub](https://hub.docker.com/) or
 For workflows the use of containers provides a consistent runtime environment 
 for individual tools, ensuring that all required dependencies and configurations
 are included and in predictable paths. Containers also provide a level of isolation, 
-which mean that your workflow can combine tools that could otherwise have 
+which means that your workflow can combine tools that could otherwise have 
 conflicting dependency requirements. 
 
-```info
-On macOS and Windows desktops, containers transparently
-execute tools in a Linux Virtual Machine, ensuring workflow tools are executed
-in the same environment across host operating systems. Care should be taken to
+```note
+On macOS and Windows desktops, containers transparently 
+execute tools in a Linux Virtual Machine, ensuring workflow tools are executed 
+in the same environment across host operating systems. Care should be taken to 
 ensure the VM has sufficient memory required by the workflow's tools.
 ```
 
@@ -73,8 +73,8 @@ The engine will transparantly compose the right `docker` commands, typically usi
 only the required working directory of that particular step. 
 
 ```tip
-Because the container is otherwise isolated from the host, the use of
-containers also ensures that all file dependencies of the tool are either
+Because the container is otherwise isolated from the host, the use of 
+containers also ensures that all file dependencies of the tool are either 
 included in the container image or declared as explicit input in CWL.
 ```
 
@@ -94,15 +94,15 @@ by calling the  `docker` command line.
 
 ```warning
 If a tool use containers internally, it can be tricky or insecure to 
-execute that tool from an outer container, as Docker-in-Docker requires
-[privileged mode](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)
+execute that tool from an outer container, as Docker-in-Docker requires 
+[privileged mode](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) 
 which in effect is giving away full `root` access to the container.
 ```
 
 Although it may be possible to achieve nested containers in a more secure way
 using [Singularity](https://sylabs.io/docs/), 
 CWL's [DockerRequirement](https://www.commonwl.org/v1.0/CommandLineTool.html#DockerRequirement)
-do not have currently have support for privilege options.
+does not have currently have support for privilege options.
 
 ## Finding container images
 
@@ -119,7 +119,7 @@ hints:
 
 For using images from other repositories like <https://quay.io/>, the `dockerPull` must be qualified with a hostname:
 
-```cwl
+```yaml
 hints:
   DockerRequirement:
     dockerPull: quay.io/opencloudio/curl
@@ -130,7 +130,7 @@ It is recommended to use the official Docker image from a tool's project when it
 * Container has not been updated for latest release
 * Desired plugins or compile options were not enabled
 * Upstream container image is unnecessarily large, an alternative based on [alpine](https://hub.docker.com/_/alpine) and [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/) might reduce the Docker image size
-* Upstream image does not have desired hardware optimization, e.g. 
+* Upstream image does not have desired hardware optimization or support, for example MPI or CUDA support.
 
 
 It is not recommended to reference private Docker repositories or use the 
@@ -139,7 +139,7 @@ options of `dockerLoad`/`dockerImport`, except for proprietary software which ca
 
 Similarly the `dockerPull` option should only be used with a local `Dockerfile` if customizations are needed in order to run the tool from CWL. If a desired open source tool do not exist as a container image, you can use `dockerFile` as an experiment before then publishing the image to Docker Hub under your user or organization's own namespace, replacing `dockerFile` with the updated referencing in `dockerPull`:
 
-```cwl
+```yaml
 hints:
   DockerRequirement:
     #dockerFile: curl-Dockerfile
@@ -162,12 +162,12 @@ components that are not open source. The **stable** version is recommended for t
 
 ```note
 Docker on Windows 10 also supports running Windows OS inside containers, 
-avoiding the need for virtual machines. While this is in theory would
-work with CWL, it would make the CWL workflow incompatible with other
+avoiding the need for virtual machines. While this is in theory would 
+work with CWL, it would make the CWL workflow incompatible with other 
 operating systems. 
 
 It is not possible to run concurrently Linux and Windows containers on the 
-same node, and most bioinformatics tools found as Docker images  
+same node, and most bioinformatics tools found as Docker images 
 assume Linux x64 containers.
 ```
 
