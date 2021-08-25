@@ -36,7 +36,7 @@ Note, however, that the cwltool currently compares the format string only, it do
 
 CWL does ensure separation of working space for each step within a workflow, however output files cannot be renamed as they are gathered from steps, and the requested outputs are returned to the base directory from which the workflow is run. This can cause issues when using `scatter` to parallise a workflow, as outputs can potentially overwrite each other. It also can result in a messy workflow directory, if a lot of outputs are being returned.
 
-One solution for this is to add a final step to your workflow that gathers together all desired outputs into a single directory. This can most easily be performed using an `ExpressionTool` to create a uniquely named directory for each scatter instance containing the required files. This will need the  `InlineJavascriptRequirement` requirement though, and so will mean your workflow is less portable than it would otherwise be.
+One solution for this is to add a final step to your workflow that gathers together all desired outputs into a single directory. This can most easily be performed using an `ExpressionTool` to create a uniquely named directory for each scatter instance containing the required files. This will need the  `InlineJavascriptRequirement` requirement though. Some CWL engines have built-in support for javascript, needed for this requirement, but to support using this with `cwltool` or `toil-cwl-runner` (the two engines the authors are most familiar with) you will need to install the Node javascript engine (using, for example, the conda-forge `nodejs` package) or docker (enabling CWL to access javascript support via the nodejs docker image).
 
 ## EDAM format gotchas
 
